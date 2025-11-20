@@ -102,3 +102,53 @@ This document tracks the step-by-step implementation of the educational SaaS lan
 
 16. **User Data**
     - Updated `src/pages/Dashboard.jsx` to fetch and display the user's first name using the `useUser` hook from Clerk.
+
+## Phase 8: Serverless Backend & Database (Vercel Functions + MongoDB)
+
+17. **Backend Setup**
+
+    - Configured Vercel Serverless Functions in `api/` directory.
+    - Created `vercel.json` to handle local routing and rewrites for API endpoints.
+    - Installed `mongodb` driver.
+
+18. **Database Connection**
+    - Created `api/mongodb.js` to handle MongoDB connection pooling.
+    - Configured `MONGODB_URI` in environment variables.
+
+## Phase 9: Real Payment Processing
+
+19. **Backend Payment Handler**
+
+    - Created `api/checkout.js` to handle payment processing securely on the server.
+    - Integrated `omise` Node.js SDK to charge cards using tokens generated on the frontend.
+    - Implemented logic to update the MongoDB `users` collection upon successful payment (`isSubscribed: true`).
+
+20. **Frontend Integration**
+    - Updated `src/pages/Pricing.jsx` to replace the simulation with a real `fetch` call to `/api/checkout`.
+    - Added error handling and success feedback for the payment flow.
+
+## Phase 10: Access Control Refinement
+
+21. **Premium Content**
+
+    - Created `src/pages/PremiumResource.jsx` for exclusive content.
+    - Added `/premium` route to `App.jsx`.
+
+22. **Subscription Verification**
+
+    - Created `api/subscription.js` endpoint to check a user's subscription status from MongoDB.
+    - Updated `src/components/RequireAuth.jsx` to accept a `requireSubscription` prop.
+      - If `true`, it fetches status from `/api/subscription`.
+      - If user is not subscribed, redirects to `/pricing` with a "premium_required" reason.
+
+23. **Dashboard vs Premium**
+    - Configured `App.jsx` to allow all authenticated users to access `/dashboard`.
+    - Restricted `/premium` only to users with a valid subscription.
+
+## Phase 11: Debugging & Stabilization
+
+24. **Fixes & Improvements**
+    - Resolved Vercel CLI rewrite issues that were interfering with Vite's HMR.
+    - Fixed ESLint configuration for global variables.
+    - Added cache-busting (timestamp) to subscription checks to ensure immediate access after payment.
+    - Added logging to both frontend and backend to trace the payment and verification flow.

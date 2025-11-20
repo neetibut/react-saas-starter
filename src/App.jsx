@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Pricing from "./pages/Pricing";
 import Dashboard from "./pages/Dashboard";
 import SignIn from "./pages/SignIn";
+import PremiumResource from "./pages/PremiumResource";
 import RequireAuth from "./components/RequireAuth";
 
 function App() {
@@ -15,8 +16,16 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <RequireAuth>
+            <RequireAuth requireSubscription={false}>
               <Dashboard />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/premium"
+          element={
+            <RequireAuth requireSubscription={true}>
+              <PremiumResource />
             </RequireAuth>
           }
         />

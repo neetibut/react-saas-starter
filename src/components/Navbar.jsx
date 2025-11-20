@@ -24,6 +24,12 @@ export default function Navbar() {
             >
               Pricing
             </Link>
+            <Link
+              to="/premium"
+              className="text-gray-900 hover:text-indigo-600 px-3 py-2 text-sm font-medium"
+            >
+              Premium
+            </Link>
             <SignedIn>
               <Link
                 to="/dashboard"

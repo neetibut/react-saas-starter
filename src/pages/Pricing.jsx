@@ -1,9 +1,13 @@
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "@clerk/clerk-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 export default function Pricing() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { isSignedIn } = useAuth();
+  const { user } = useUser();
+
+  const showPremiumMessage = searchParams.get("reason") === "premium_required";
 
   const handleSubscribe = () => {
     if (!isSignedIn) {
@@ -17,16 +21,36 @@ export default function Pricing() {
       });
 
       window.OmiseCard.open({
-        amount: 9900,
-        currency: "USD",
+        amount: 290000,
+        currency: "THB",
         defaultPaymentMethod: "credit_card",
-        onCreateTokenSuccess: (nonce) => {
+        onCreateTokenSuccess: async (nonce) => {
           console.log("Token created:", nonce);
-          // Simulate backend verification
-          setTimeout(() => {
-            alert("Payment Successful! Welcome to the course.");
-            navigate("/dashboard");
-          }, 1000);
+
+          try {
+            const res = await fetch("/api/checkout", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                token: nonce,
+                userId: user.id,
+              }),
+            });
+
+            const data = await res.json();
+
+            if (data.success) {
+              alert("Payment Successful! Welcome to the course.");
+              navigate("/dashboard");
+            } else {
+              alert("Payment failed: " + (data.message || "Unknown error"));
+            }
+          } catch (err) {
+            console.error("Payment error:", err);
+            alert("An error occurred during payment processing.");
+          }
         },
       });
     } else {
@@ -45,13 +69,44 @@ export default function Pricing() {
           <p className="mt-6 text-lg leading-8 text-gray-600">
             Choose the plan that fits your learning journey.
           </p>
+          {showPremiumMessage && (
+            <div className="mt-6 rounded-md bg-yellow-50 p-4">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-yellow-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-yellow-800">
+                    Access Restricted
+                  </h3>
+                  <div className="mt-2 text-sm text-yellow-700">
+                    <p>
+                      You need an active subscription to view that content.
+                      Please subscribe below.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         {/* Pricing cards will go here */}
         <div className="mt-16 flex justify-center">
           <div className="p-10 border rounded-xl shadow-sm">
             <h3 className="text-xl font-semibold">Pro Bootcamp</h3>
             <p className="mt-4 text-3xl font-bold">
-              $99
+              ฿2,900
               <span className="text-base font-normal text-gray-500">
                 /month
               </span>
