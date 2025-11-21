@@ -25,7 +25,7 @@ export default function RequireAuth({ children, requireSubscription = true }) {
             },
           });
           const data = await response.json();
-          console.log("Subscription check result:", data);
+          // console.log("Subscription check result:", data);
           setIsSubscribed(data.isSubscribed);
         } catch (error) {
           console.error("Failed to check subscription:", error);

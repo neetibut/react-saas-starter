@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     // 2. Validate Input
     const { token } = validate(checkoutSchema, req.body);
 
-    console.log("Processing payment for verified user:", userId);
+    // console.log("Processing payment for verified user:", userId);
 
     // 3. Charge the card via Omise
     const charge = await omise.charges.create({
