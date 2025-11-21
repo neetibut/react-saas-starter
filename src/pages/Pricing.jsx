@@ -1,11 +1,10 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useAuth, useUser } from "@clerk/clerk-react";
+import { useAuth } from "@clerk/clerk-react";
 
 export default function Pricing() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { isSignedIn } = useAuth();
-  const { user } = useUser();
+  const { isSignedIn, getToken } = useAuth();
 
   const showPremiumMessage = searchParams.get("reason") === "premium_required";
 
@@ -25,17 +24,18 @@ export default function Pricing() {
         currency: "THB",
         defaultPaymentMethod: "credit_card",
         onCreateTokenSuccess: async (nonce) => {
-          console.log("Token created:", nonce);
+          // console.log("Token created:", nonce);
 
           try {
+            const token = await getToken();
             const res = await fetch("/api/checkout", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
               },
               body: JSON.stringify({
                 token: nonce,
-                userId: user.id,
               }),
             });
 

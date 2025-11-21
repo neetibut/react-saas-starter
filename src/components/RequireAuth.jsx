@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
 export default function RequireAuth({ children, requireSubscription = true }) {
-  const { isSignedIn, isLoaded } = useAuth();
+  const { isSignedIn, isLoaded, getToken } = useAuth();
   const { user } = useUser();
   const [isSubscribed, setIsSubscribed] = useState(null);
   const [checkingSubscription, setCheckingSubscription] = useState(true);
@@ -17,10 +17,13 @@ export default function RequireAuth({ children, requireSubscription = true }) {
     async function checkSubscription() {
       if (isSignedIn && user) {
         try {
+          const token = await getToken();
           // Add timestamp to prevent caching
-          const response = await fetch(
-            `/api/subscription?userId=${user.id}&t=${Date.now()}`
-          );
+          const response = await fetch(`/api/subscription?t=${Date.now()}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
           const data = await response.json();
           console.log("Subscription check result:", data);
           setIsSubscribed(data.isSubscribed);

@@ -1,18 +1,16 @@
 import clientPromise from "./mongodb.js";
+import { verifySession } from "./_utils.js";
 
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
 
-  const { userId } = req.query;
-  console.log("Checking subscription for:", userId);
-
-  if (!userId) {
-    return res.status(400).json({ message: "Missing userId" });
-  }
-
   try {
+    // 1. Verify the user's session
+    const userId = await verifySession(req);
+    console.log("Checking subscription for verified user:", userId);
+
     const client = await clientPromise;
     const db = client.db("bootcamp_db");
 
@@ -26,6 +24,9 @@ export default async function handler(req, res) {
     }
   } catch (error) {
     console.error(error);
+    if (error.message.startsWith("Unauthorized")) {
+      return res.status(401).json({ message: error.message });
+    }
     return res.status(500).json({ error: error.message });
   }
 }
