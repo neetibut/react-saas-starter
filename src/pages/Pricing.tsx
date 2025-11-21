@@ -23,7 +23,7 @@ export default function Pricing() {
         amount: 290000,
         currency: "THB",
         defaultPaymentMethod: "credit_card",
-        onCreateTokenSuccess: async (nonce) => {
+        onCreateTokenSuccess: async (nonce: string) => {
           // console.log("Token created:", nonce);
 
           try {

@@ -2,10 +2,15 @@ import { useAuth, useUser, RedirectToSignIn } from "@clerk/clerk-react";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 
-export default function RequireAuth({ children, requireSubscription = true }) {
+interface RequireAuthProps {
+  children: React.ReactNode;
+  requireSubscription?: boolean;
+}
+
+export default function RequireAuth({ children, requireSubscription = true }: RequireAuthProps) {
   const { isSignedIn, isLoaded, getToken } = useAuth();
   const { user } = useUser();
-  const [isSubscribed, setIsSubscribed] = useState(null);
+  const [isSubscribed, setIsSubscribed] = useState<boolean | null>(null);
   const [checkingSubscription, setCheckingSubscription] = useState(true);
 
   useEffect(() => {
@@ -39,7 +44,7 @@ export default function RequireAuth({ children, requireSubscription = true }) {
     }
 
     checkSubscription();
-  }, [isSignedIn, user, isLoaded, requireSubscription]);
+  }, [isSignedIn, user, isLoaded, requireSubscription, getToken]);
 
   if (!isLoaded || checkingSubscription) {
     return (
