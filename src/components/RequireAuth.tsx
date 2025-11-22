@@ -1,6 +1,7 @@
 import { useAuth, useUser, RedirectToSignIn } from "@clerk/clerk-react";
 import { useEffect, useState, ReactNode } from "react";
 import { Navigate } from "react-router-dom";
+import type { SubscriptionResponse } from "../types/api";
 
 type RequireAuthProps = {
   children: ReactNode;
