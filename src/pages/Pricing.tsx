@@ -1,6 +1,17 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@clerk/clerk-react";
 
+type PricingPlan = {
+  name: string;
+  price: number;
+  currency: string;
+  interval: string;
+};
+
+type OmiseTokenCallback = (nonce: string) => void;
+
+type CheckoutResponse = { success: boolean; message?: string };
+
 export default function Pricing() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -23,7 +34,7 @@ export default function Pricing() {
         amount: 290000,
         currency: "THB",
         defaultPaymentMethod: "credit_card",
-        onCreateTokenSuccess: async (nonce: string) => {
+        onCreateTokenSuccess: (async (nonce: string) => {
           // console.log("Token created:", nonce);
 
           try {
@@ -39,7 +50,7 @@ export default function Pricing() {
               }),
             });
 
-            const data = await res.json();
+            const data: CheckoutResponse = await res.json();
 
             if (data.success) {
               alert("Payment Successful! Welcome to the course.");
@@ -51,7 +62,7 @@ export default function Pricing() {
             console.error("Payment error:", err);
             alert("An error occurred during payment processing.");
           }
-        },
+        }) as OmiseTokenCallback,
       });
     } else {
       console.error("OmiseCard not loaded");
@@ -72,7 +83,7 @@ export default function Pricing() {
           {showPremiumMessage && (
             <div className="mt-6 rounded-md bg-yellow-50 p-4">
               <div className="flex">
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <svg
                     className="h-5 w-5 text-yellow-400"
                     viewBox="0 0 20 20"
@@ -103,21 +114,30 @@ export default function Pricing() {
         </div>
         {/* Pricing cards will go here */}
         <div className="mt-16 flex justify-center">
-          <div className="p-10 border rounded-xl shadow-sm">
-            <h3 className="text-xl font-semibold">Pro Bootcamp</h3>
-            <p className="mt-4 text-3xl font-bold">
-              ฿2,900
-              <span className="text-base font-normal text-gray-500">
-                /month
-              </span>
-            </p>
-            <button
-              onClick={handleSubscribe}
-              className="mt-8 w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
-            >
-              Subscribe
-            </button>
-          </div>
+          {[
+            {
+              name: "Pro Bootcamp",
+              price: 2900,
+              currency: "THB",
+              interval: "month",
+            },
+          ].map((plan: PricingPlan) => (
+            <div key={plan.name} className="p-10 border rounded-xl shadow-sm">
+              <h3 className="text-xl font-semibold">{plan.name}</h3>
+              <p className="mt-4 text-3xl font-bold">
+                {plan.price.toLocaleString()}
+                <span className="text-base font-normal text-gray-500">
+                  /{plan.interval}
+                </span>
+              </p>
+              <button
+                onClick={handleSubscribe}
+                className="mt-8 w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+              >
+                Subscribe
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>

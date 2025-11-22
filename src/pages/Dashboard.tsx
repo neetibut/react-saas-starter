@@ -1,7 +1,11 @@
 import { useUser } from "@clerk/clerk-react";
 
+type User = {
+  firstName?: string;
+};
+
 export default function Dashboard() {
-  const { user } = useUser();
+  const { user } = useUser() as { user: User | null };
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">

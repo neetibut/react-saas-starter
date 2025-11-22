@@ -1,6 +1,13 @@
 import { Code, Users, Briefcase, MessageSquare } from "lucide-react";
+import { ComponentType } from "react";
 
-const features = [
+type Feature = {
+  name: string;
+  description: string;
+  icon: ComponentType<{ className?: string; "aria-hidden"?: boolean | "true" }>;
+};
+
+const features: Feature[] = [
   {
     name: "Expert Instructors",
     description:

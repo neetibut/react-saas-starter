@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
+import { JSX } from "react";
 
-export default function Navbar() {
+export default function Navbar(): JSX.Element {
   return (
     <nav className="border-b border-gray-200 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

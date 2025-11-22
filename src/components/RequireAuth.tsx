@@ -1,13 +1,16 @@
 import { useAuth, useUser, RedirectToSignIn } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 
-interface RequireAuthProps {
-  children: React.ReactNode;
+type RequireAuthProps = {
+  children: ReactNode;
   requireSubscription?: boolean;
-}
+};
 
-export default function RequireAuth({ children, requireSubscription = true }: RequireAuthProps) {
+export default function RequireAuth({
+  children,
+  requireSubscription = true,
+}: RequireAuthProps) {
   const { isSignedIn, isLoaded, getToken } = useAuth();
   const { user } = useUser();
   const [isSubscribed, setIsSubscribed] = useState<boolean | null>(null);
@@ -29,7 +32,7 @@ export default function RequireAuth({ children, requireSubscription = true }: Re
               Authorization: `Bearer ${token}`,
             },
           });
-          const data = await response.json();
+          const data: SubscriptionResponse = await response.json();
           // console.log("Subscription check result:", data);
           setIsSubscribed(data.isSubscribed);
         } catch (error) {
