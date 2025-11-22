@@ -35,42 +35,42 @@ const articles: PremiumArticle[] = [
 
 export default function PremiumResource() {
   return (
-    <div className="bg-white py-24 sm:py-32">
+    <div className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-primary sm:text-4xl">
             Premium Resources
           </h2>
-          <p className="mt-2 text-lg leading-8 text-gray-600">
+          <p className="mt-2 text-lg leading-8 text-secondary">
             Exclusive content for our Pro subscribers.
           </p>
         </div>
-        <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+        <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-muted pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
           {articles.map((article) => (
             <article
               key={article.title}
-              className="flex max-w-xl flex-col items-start justify-between"
+              className="flex max-w-xl flex-col items-start justify-between card-surface border-muted p-6 rounded-lg"
             >
               <div className="flex items-center gap-x-4 text-xs">
-                <time dateTime={article.date} className="text-gray-500">
+                <time dateTime={article.date} className="text-secondary">
                   {new Date(article.date).toLocaleDateString(undefined, {
                     year: "numeric",
                     month: "short",
                     day: "numeric",
                   })}
                 </time>
-                <span className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
+                <span className="relative z-10 rounded-full bg-neutral-800 px-3 py-1.5 font-medium text-secondary hover:bg-neutral-700">
                   {article.category}
                 </span>
               </div>
               <div className="group relative">
-                <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+                <h3 className="mt-3 text-lg font-semibold leading-6 text-primary group-hover:text-secondary">
                   <a href={article.link}>
                     <span className="absolute inset-0" />
                     {article.title}
                   </a>
                 </h3>
-                <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+                <p className="mt-5 line-clamp-3 text-sm leading-6 text-secondary">
                   {article.description}
                 </p>
               </div>

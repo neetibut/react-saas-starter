@@ -74,18 +74,18 @@ export default function Pricing() {
     <div className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h2 className="text-3xl font-bold tracking-tight text-primary sm:text-4xl">
             Pricing Plans
           </h2>
-          <p className="mt-6 text-lg leading-8 text-gray-600">
+          <p className="mt-6 text-lg leading-8 text-secondary">
             Choose the plan that fits your learning journey.
           </p>
           {showPremiumMessage && (
-            <div className="mt-6 rounded-md bg-yellow-50 p-4">
+            <div className="mt-6 rounded-md bg-yellow-800 p-4">
               <div className="flex">
                 <div className="shrink-0">
                   <svg
-                    className="h-5 w-5 text-yellow-400"
+                    className="h-5 w-5 text-yellow-300"
                     viewBox="0 0 20 20"
                     fill="currentColor"
                     aria-hidden="true"
@@ -98,10 +98,10 @@ export default function Pricing() {
                   </svg>
                 </div>
                 <div className="ml-3">
-                  <h3 className="text-sm font-medium text-yellow-800">
+                  <h3 className="text-sm font-medium text-yellow-50">
                     Access Restricted
                   </h3>
-                  <div className="mt-2 text-sm text-yellow-700">
+                  <div className="mt-2 text-sm text-yellow-100">
                     <p>
                       You need an active subscription to view that content.
                       Please subscribe below.
@@ -122,17 +122,22 @@ export default function Pricing() {
               interval: "month",
             },
           ].map((plan: PricingPlan) => (
-            <div key={plan.name} className="p-10 border rounded-xl shadow-sm">
-              <h3 className="text-xl font-semibold">{plan.name}</h3>
-              <p className="mt-4 text-3xl font-bold">
-                {plan.price.toLocaleString()}
-                <span className="text-base font-normal text-gray-500">
+            <div
+              key={plan.name}
+              className="p-10 border rounded-xl shadow-sm card-surface border-muted"
+            >
+              <h3 className="text-xl font-semibold text-primary">
+                {plan.name}
+              </h3>
+              <p className="mt-4 text-3xl font-bold text-primary">
+                {plan.price.toLocaleString()}
+                <span className="text-base font-normal text-secondary">
                   /{plan.interval}
                 </span>
               </p>
               <button
                 onClick={handleSubscribe}
-                className="mt-8 w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+                className="mt-8 w-full rounded-md btn-primary px-3 py-2 text-sm font-semibold shadow-sm"
               >
                 Subscribe
               </button>

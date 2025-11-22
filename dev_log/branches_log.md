@@ -15,3 +15,8 @@
 ## version_0.3
 
 - adopt TypeScript in frontend
+
+## version_0.4
+
+- dark mode as primary
+- Landing page copy changed to Fastaf from DevBootcamp
